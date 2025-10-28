@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+#include "tokenizer.cpp"
 
 int main(int argc, char *argv[]) {
 
@@ -33,9 +33,12 @@ int main(int argc, char *argv[]) {
     } 
 
     /* stuff */
-    
+    Tokenizer tokenizer;
+    std::string lineBuffer;
+    getline(input_file, lineBuffer);
+    tokenizer.tokenizeLine(lineBuffer);
+
     /* should we use a data structure to pass the lines to the tokenizer? */
     input_file.close();
-
 
 }
