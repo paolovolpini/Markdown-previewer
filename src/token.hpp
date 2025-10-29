@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 
 enum TokenType {
@@ -15,4 +16,5 @@ class Token {
     private:
         TokenType type;
         std::string tokenString;
+        std::size_t title_size;
 };

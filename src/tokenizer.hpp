@@ -1,9 +1,10 @@
 #include <string>
 #include <vector>
+#include "token.hpp"
 
 class Tokenizer {
     public:
         Tokenizer();
-        std::vector<std::string> tokenizeLine(std::string line);
+        std::vector<Token> tokenizeLine(std::string line);
     private:
 };
