@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "tokenizer.hpp"
+#include "renderer.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -23,23 +24,30 @@ int main(int argc, char *argv[]) {
         std::cerr << "input file is not a .md file." << std::endl;
         return(EXIT_FAILURE);
     }
-
-    input_file.clear();
-
+    
     input_file.open(argv[1]);
     if (!input_file.is_open()) {
         std::cerr << "error: file was not properly opened, probably does not exists." << std::endl;
         return(EXIT_FAILURE);
     } 
 
-    /* stuff */
+    /* creating both the tokenizer object and html-renderer object */
     Tokenizer tokenizer;
     std::string lineBuffer;
-    getline(input_file, lineBuffer);
-    std::cout << lineBuffer << "\n";
-    tokenizer.tokenizeLine(lineBuffer);
+    HtmlRenderer renderer(file_path);
+    std::vector<Token> tokenLineBuffer;
+    
+    renderer.createFile();
 
-    /* should we use a data structure to pass the lines to the tokenizer? */
+    /* reads line per line*/
+    while (!input_file.eof()) {
+        getline(input_file, lineBuffer);
+        //std::cout << lineBuffer << "\n";
+        tokenLineBuffer = tokenizer.tokenizeLine(lineBuffer);
+        renderer.writeTokenToFile(tokenLineBuffer);
+    }
+    
+    renderer.endHtmlWriting();
     input_file.close();
 
 }

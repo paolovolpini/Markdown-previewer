@@ -3,18 +3,24 @@
 
 enum TokenType {
     TEXT,
-    INLINE_SYMBOL,
-    DISPLAY_SYMBOL,
-    TITLE_SYMBOL
+    BOLD,
+    ITALIC,
+    BOLD_ITALIC,
+    TITLE,
+    INLINE_MATH,
+    DISPLAY_MATH,
+    BREAK_PARAGRAPH
 };
 
 class Token { 
     public:
         Token(std::string input_string);
         TokenType getTokenType();
+        std::string getTokenString();
+        short unsigned int getTokenTitleSize();
 
     private:
         TokenType type;
         std::string tokenString;
-        std::size_t title_size;
+        short unsigned int title_size;
 };
