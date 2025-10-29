@@ -5,6 +5,6 @@
 class Tokenizer {
     public:
         Tokenizer();
-        std::vector<Token> tokenizeLine(std::string line);
+        std::vector<Token> tokenizeLine(const std::string &line);
     private:
 };

@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
     renderer.createFile();
 
     /* reads line per line*/
-    while (!input_file.eof()) {
-        getline(input_file, lineBuffer);
+    while (getline(input_file, lineBuffer)) {
+        if(input_file.eof()) break;
         //std::cout << lineBuffer << "\n";
         tokenLineBuffer = tokenizer.tokenizeLine(lineBuffer);
         renderer.writeTokenToFile(tokenLineBuffer);

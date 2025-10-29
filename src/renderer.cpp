@@ -8,9 +8,7 @@ HtmlRenderer::HtmlRenderer(std::string file_name) {
 /* opening tags */
 void HtmlRenderer::createFile() {
     this->output_file.open(this->file_name, std::ios::out);
-    this->output_file << "<!DOCTYPE html>\n";
-    this->output_file << "<html>\n";
-    this->output_file << "\n";
+    this->output_file << "<!DOCTYPE html>\n<html>\n\n";
 }
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
@@ -33,7 +31,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->stack.push(token_to_write[i]);
             }
 
-            this->output_file << token_to_write[i].getTokenString() << " ";
+            this->output_file << token_to_write[i].getTokenString();
             break;
 
         default:
