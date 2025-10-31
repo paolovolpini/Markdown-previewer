@@ -40,6 +40,8 @@ std::vector<Token> Tokenizer::tokenizeLine(const std::string &line) {
 	std::vector<Token> tokens;
 	std::size_t prev = 0;
 	std::size_t found = line.find(' ');
+
+	// this is f*cking GREAT :) -dam
 	while(found != std::string::npos) {
 		std::string token = line.substr(prev, found-prev);
 		std::cout << "Token pushed:" << token << std::endl;
@@ -47,6 +49,7 @@ std::vector<Token> Tokenizer::tokenizeLine(const std::string &line) {
 		prev = found;
 		found = line.find(' ', prev+1);
 	}
+
 	std::string remainder = line.substr(prev);
 	tokens.push_back(Token(remainder));
 	return tokens;

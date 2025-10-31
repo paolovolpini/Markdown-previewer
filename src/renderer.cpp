@@ -13,9 +13,8 @@ void HtmlRenderer::createFile() {
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     bool title = false;
-    in_paragraph = false;
 
-    for (int i = 0; i < token_to_write.size(); i++) {
+    for (int i = 0; i < (int)token_to_write.size(); i++) {
         
         switch (token_to_write[i].getTokenType()) {
         case TITLE:
@@ -30,9 +29,14 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->in_paragraph = true;
                 this->stack.push(token_to_write[i]);
             }
-
             this->output_file << token_to_write[i].getTokenString();
             break;
+        
+        case BREAK_PARAGRAPH:
+            if (this->in_paragraph == true) {
+                this->output_file << "</p>";
+                this->in_paragraph = false;
+            } 
 
         default:
             break;
@@ -40,13 +44,10 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     }
 
     /* handle tag closing using a stack*/
-    while (this->stack.size()>0) {
+    while (this->stack.size() > 0) {
         switch (this->stack.top().getTokenType()) {
         case TITLE:
             this->output_file << "</h" << this->stack.top().getTokenTitleSize() << ">";
-            break;
-        case TEXT:
-            this->output_file << "</p>";
             break;
         default:
             break;
@@ -58,6 +59,9 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 }
 
 void HtmlRenderer::endHtmlWriting() {
+    if (this->in_paragraph == true) {
+        this->output_file << "</p>\n";
+    }
     this->output_file << "</html>";
     this->output_file.close();
 }
