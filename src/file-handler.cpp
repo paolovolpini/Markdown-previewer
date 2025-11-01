@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <filesystem>
+#include <future>
 #include "tokenizer.hpp"
 #include "renderer.hpp"
-
+#include "host-server.hpp"
 int main(int argc, char *argv[]) {
 
     std::fstream input_file;
@@ -49,5 +51,26 @@ int main(int argc, char *argv[]) {
     
     renderer.endHtmlWriting();
     input_file.close();
+	// testing server....
+	
+	// since we save automatically into an html
+	// i am testing by reading the html as a string 
+	std::string html_source = file_path.substr(0, file_path.size()-3).append(".html");
+	auto size = std::filesystem::file_size(html_source);
+	std::string content(size, '\0');
+	std::ifstream in(html_source);
+	in.read(&content[0], size);
 
+	// start server
+	HttpServer server;
+	server.SetPage(content);
+	auto server_future = std::async(std::launch::async, [&]() 
+		{ server.Listen(); }
+	); // lambda function that takes server passed by reference and calls Listen
+	std::cout << "Server is up! Press anything to stop...\n";
+	std::cin.get();
+	server.Shutdown();
+	server_future.wait();
+	
+	return 0;
 }

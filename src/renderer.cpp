@@ -23,15 +23,21 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
             title = true;
             break;
 
-        case TEXT:
+        case TEXT: {
             if (this->in_paragraph == false && title == false) {
                 this->output_file << "<p>";
                 this->in_paragraph = true;
                 this->stack.push(token_to_write[i]);
             }
-            this->output_file << token_to_write[i].getTokenString();
+			std::string to_write = token_to_write[i].getTokenString();
+            if(to_write.back() == '\\') {
+				to_write.back() = '\0';
+				to_write.append("\n<br>");
+			}
+			this->output_file << to_write;
             break;
-        
+		}
+
         case BREAK_PARAGRAPH:
             if (this->in_paragraph == true) {
                 this->output_file << "</p>";
