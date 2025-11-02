@@ -27,6 +27,21 @@ HttpServer::HttpServer() {
 		exit(EXIT_FAILURE);
 	}
 	Log("Socket is ready to listen on port " + std::to_string(ntohs(this->addr.sin_port)));
+
+	/*auto opening of the localhost page*/
+	std::string URL;   
+    URL = "http://localhost:" + std::to_string(ntohs(this->addr.sin_port));
+
+	pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        return;
+    } else if (pid == 0) {
+        execlp("xdg-open", "xdg-open", URL.c_str(), (char *)NULL);
+		/*in case of execlp errors, it will pass through*/
+        perror("execlp");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void HttpServer::SetPage(const std::string &page) {
