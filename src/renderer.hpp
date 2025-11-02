@@ -19,4 +19,5 @@ class HtmlRenderer {
         std::fstream output_file;
         std::stack<Token> stack;
         bool in_paragraph = false;
+        bool in_display_code = false;
 };

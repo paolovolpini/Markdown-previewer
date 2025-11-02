@@ -18,7 +18,8 @@ Token::Token(std::string input_string) {
         return;
     }
 
-    if (input_string == "```" || input_string == "$$") {
+    if (input_string.substr(0,3) == "```") {
+        this->type = DISPLAY_CODE;
         return;
     }
 

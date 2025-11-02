@@ -24,12 +24,18 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
             break;
 
         case TEXT: {
+            std::string to_write = token_to_write[i].getTokenString();
+            
+            if (this->in_display_code) {
+                this->output_file << to_write;
+                break;
+            }
+
             if (this->in_paragraph == false && title == false) {
                 this->output_file << "<p>";
                 this->in_paragraph = true;
                 this->stack.push(token_to_write[i]);
             }
-			std::string to_write = token_to_write[i].getTokenString();
             if(to_write.back() == '\\') {
 				to_write.back() = '\0';
 				to_write.append("\n<br>");
@@ -43,6 +49,18 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->output_file << "</p>";
                 this->in_paragraph = false;
             } 
+            break;
+
+        case DISPLAY_CODE:
+            std::cout << token_to_write[i].getTokenString();
+            if (this->in_display_code == false) {
+                this->output_file << "<pre>\n\t<code>";
+                this->in_display_code = true;
+            } else {
+                this->output_file << "\t</code>\n</pre>";
+                this->in_display_code = false;
+            }
+            break;
 
         default:
             break;
@@ -67,7 +85,12 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 void HtmlRenderer::endHtmlWriting() {
     if (this->in_paragraph == true) {
         this->output_file << "</p>\n";
+        this->in_paragraph = false;
+    } else if (this->in_display_code == true) {
+        this->output_file << "\t</code>\n</pre>";
+        this->in_display_code = false;
     }
+
     this->output_file << "</html>";
     this->output_file.close();
 }

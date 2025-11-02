@@ -9,6 +9,8 @@ enum TokenType {
     TITLE,
     INLINE_MATH,
     DISPLAY_MATH,
+    INLINE_CODE,
+    DISPLAY_CODE,
     BREAK_PARAGRAPH
 };
 
