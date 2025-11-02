@@ -10,7 +10,7 @@ void HttpServer::Error(const std::string &msg) {
 
 HttpServer::HttpServer() {
 	this->socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if(this->socket_fd < 0) {
+	if (this->socket_fd < 0) {
 		Error("Error in creating socket");
 		exit(EXIT_FAILURE);
 	}
@@ -18,11 +18,11 @@ HttpServer::HttpServer() {
 	this->addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	this->addr.sin_port = 0;
 	socklen_t temp = sizeof(this->addr);
-	if(bind(this->socket_fd, (struct sockaddr *) &this->addr, temp) < 0) {
+	if (bind(this->socket_fd, (struct sockaddr *) &this->addr, temp) < 0) {
 		Error("Error in binding");
 		exit(EXIT_FAILURE);
 	}
-	if(getsockname(this->socket_fd, (struct sockaddr *) &this->addr, &temp) < 0) {
+	if (getsockname(this->socket_fd, (struct sockaddr *) &this->addr, &temp) < 0) {
 		Error("Error in getting port number");
 		exit(EXIT_FAILURE);
 	}
@@ -53,20 +53,20 @@ void HttpServer::SetPage(const std::string &page) {
 }
 
 void HttpServer::Listen() {
-	if(running) return;
+	if (running) return;
 	this->running = true;
-	if(listen(this->socket_fd, 1) < 0) {
+	if (listen(this->socket_fd, 1) < 0) {
 		Error("Error in listening connections");
 		exit(EXIT_FAILURE);
 	}
 	Log("Now listening...");
-	while(running) {
+	while (running) {
 		int sock_client = accept(this->socket_fd, nullptr, nullptr);
-		if(sock_client < 0) continue;
+		if (sock_client < 0) continue;
 		// yes i know i didn't put the parenthesis
 		// it's just a continue and it's fucking midnight
 		// please don't refactor this 
-		if(send(sock_client, this->content.c_str(), this->content.size(), 0) < 0) {
+		if (send(sock_client, this->content.c_str(), this->content.size(), 0) < 0) {
 			Error("Error in sending page. Skipping client...");
 			continue;
 		}
@@ -75,7 +75,7 @@ void HttpServer::Listen() {
 }
 
 void HttpServer::Shutdown() {
-	if(this->running) {
+	if (this->running) {
 		this->running = false;
 		shutdown(this->socket_fd, SHUT_RDWR);
 		close(this->socket_fd);
