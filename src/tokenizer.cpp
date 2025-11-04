@@ -1,6 +1,7 @@
 #include "tokenizer.hpp"
 #include "token.hpp"
 #include <sstream>
+#include <stack>
 
 Tokenizer::Tokenizer() {
 
@@ -31,12 +32,51 @@ std::vector<Token> Tokenizer::tokenizeLine(const std::string &line) {
     return tokens;
 }*/
 
+void Tokenizer::parseAsterisks(std::string &str) {
+	std::stack<std::pair<std::size_t, int>> ast_stack;
+	std::size_t index = str.find('*', 0);
+	std::size_t prev = index;
+	ast_stack.push({index, 1});
+	while((index = str.find('*', prev+1)) != std::string::npos) {	
+		if(index == prev+1) {
+			ast_stack.top().second++;
+		}
+		else {
+			ast_stack.push({index, 1});
+		}
+		prev = index;
+	}
+	while(!ast_stack.empty()) {
+		auto pair1 = ast_stack.top();
+		ast_stack.pop();
+		if(ast_stack.empty() || str.at(pair1.first-1) == ' ') continue;
+
+		auto pair2 = ast_stack.top();
+		ast_stack.pop();
+		if(str.at(pair2.first+1) == ' ') continue;
+		int ast_num = pair1.second > pair2.second ? pair2.second : pair1.second;
+		if(ast_num == 1) {
+			str.replace(pair1.first, ast_num, "</it>");
+			str.replace(pair2.first+(pair2.second-ast_num), ast_num, "<it>");
+		}
+		if(ast_num > 1 && ast_num % 2 == 1) {
+			str.replace(pair1.first, ast_num, "</b></it>");
+			str.replace(pair2.first+(pair2.second - ast_num), ast_num, "<it><b>");
+		}
+		else {
+			str.replace(pair1.first, ast_num, "</b>");
+			str.replace(pair2.first+(pair2.second - ast_num), ast_num, "<b>");
+		}
+	}		
+} 
+
 // I would like to propose this 
-std::vector<Token> Tokenizer::tokenizeLine(const std::string &line) {
+std::vector<Token> Tokenizer::tokenizeLine(std::string &line) {
 	/* our line might not contain a single word which means that it's just a newline
 	 * stringstream ignores every space, thus not pushing newlines
 	 * in order to fix this, we need to split the string only by ' '
 	 **/
+	parseAsterisks(line);
 	std::vector<Token> tokens;
 	std::size_t prev = 0;
 	std::size_t found = line.find(' ');
