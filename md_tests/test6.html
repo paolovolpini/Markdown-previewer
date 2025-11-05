@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<html lang="it">
+<head>
+	<meta charset="utf-8">	<title> your preview </title>
+</head>
+<h1> Algoritmo di ricerca lineare</h1>  <p>L'algoritmo di <b>ricerca lineare</b> permette la ricerca di un determinato elemento \(x\) in un vettore <b>non ordinato</b> di dimensione \(N\). Chiameremo la procedura <code>linear_search</code>. </p>
+ <p>La complessità di questo algoritmo è </p>
+ <div align="center" style="border: 1px solid #b8b8b8ff;">
+	 \( O(n) = \text{Un passo per ogni slot del vettore} 	 \)
+</div>
+<br>
+  <p>Una possibile implementazione è </p>
+ <div style="border: 1px solid #b8b8b8ff;">
+<pre>
+	<code> 
+int linear_search(int arr[], int value, int arr_size) { 
+    for (int i = 0; i < arr_size; i++) { 
+        if (arr[i] == value) { 
+            return i; 
+        } 
+    } 
+    return -1; 
+} 
+	</code>
+</pre></html>

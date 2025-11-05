@@ -10,7 +10,9 @@ HtmlRenderer::HtmlRenderer(std::string file_name) {
 void HtmlRenderer::createFile() {
     this->output_file.open(this->file_name, std::ios::out | std::ios::trunc);
     this->output_file << "<!DOCTYPE html>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
+    this->output_file << "<html lang=\"it\">\n<head>\n\t<meta charset=\"utf-8\">\t<title> your preview </title>\n</head>\n";
 }
+
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     int title = 0;
@@ -54,7 +56,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_CODE:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_code == false) {
-                this->output_file << "<div align=\"center\" style=\"border: 1px solid #b8b8b8ff;\">\n";
+                this->output_file << "<div style=\"border: 1px solid #b8b8b8ff;\">\n";
                 this->output_file << "<pre>\n\t<code>";
                 this->in_display_code = true;
             } else {
