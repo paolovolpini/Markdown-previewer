@@ -9,8 +9,7 @@ Im so GREAT
 
 maybe
 
-Ok not check this calcs $2^2 = 0.5$ INSANE $ TEST TEST TEST $
-
+Ok not check this calcs $2^2 = 0.5$ INSANE 
 OK now we try some display math
 
 $$

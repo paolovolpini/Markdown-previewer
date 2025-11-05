@@ -94,6 +94,29 @@ void Tokenizer::parseInlineSymbol(std::string &str, const char symbol, const std
 	}		
 }
 
+void Tokenizer::parseInlineSymbol(std::string &str, const char symbol, const std::string opening_tag, const std::string closing_tag) {
+	std::stack<std::pair<std::size_t, int>> ast_stack;
+	std::size_t index = str.find(symbol, 0);
+	std::size_t prev = index;
+	ast_stack.push({index, 1});
+
+	while ((index = str.find(symbol, prev+1)) != std::string::npos) {	
+		ast_stack.push({index, 1});
+		prev = index;
+	}
+	while (!ast_stack.empty()) {
+		auto pair1 = ast_stack.top();
+		ast_stack.pop();
+		if (ast_stack.empty()) continue; // needed to ignore not closed symbols
+
+		auto pair2 = ast_stack.top();
+		ast_stack.pop();
+		int ast_num = pair1.second > pair2.second ? pair2.second : pair1.second;
+		str.replace(pair1.first, ast_num, closing_tag);
+		str.replace(pair2.first+(pair2.second-ast_num), ast_num, opening_tag);
+	}		
+}
+
 // I would like to propose this 
 std::vector<Token> Tokenizer::tokenizeLine(std::string &line) {
 	/* our line might not contain a single word which means that it's just a newline
@@ -101,9 +124,9 @@ std::vector<Token> Tokenizer::tokenizeLine(std::string &line) {
 	 * in order to fix this, we need to split the string only by ' '
 	 **/
 	parseAsterisks(line);
-	
+
 	if (line.substr(0,2) != "$$") {
-		parseInlineSymbol(line, '$', "math");
+		parseInlineSymbol(line, '$', "\\(", "\\)");
 	}
 	
 	if (line.substr(0,3) != "```") {

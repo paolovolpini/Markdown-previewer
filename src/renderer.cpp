@@ -9,7 +9,7 @@ HtmlRenderer::HtmlRenderer(std::string file_name) {
 /* opening tags */
 void HtmlRenderer::createFile() {
     this->output_file.open(this->file_name, std::ios::out | std::ios::trunc);
-    this->output_file << "<!DOCTYPE html>\n<html>\n\n";
+    this->output_file << "<!DOCTYPE html>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
 }
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
@@ -54,7 +54,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_CODE:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_code == false) {
-                this->output_file << "<div align=\"center\" style=\"background: 1px solid #b9b9b9ff;\">\n";
+                this->output_file << "<div align=\"center\" style=\"border: 1px solid #b8b8b8ff;\">\n";
                 this->output_file << "<pre>\n\t<code>";
                 this->in_display_code = true;
             } else {
@@ -66,11 +66,11 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_MATH:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_math == false) {
-                this->output_file << "<div align=\"center\" style=\"background: 1px solid #b9b9b9ff;\">\n";
-                this->output_file << "\t<math>";
+                this->output_file << "<div align=\"center\" style=\"border: 1px solid #b8b8b8ff;\">\n";
+                this->output_file << "\t \\(";
                 this->in_display_math = true;
             } else {
-                this->output_file << "\t</math>\n";
+                this->output_file << "\t \\)\n";
                 this->output_file << "</div>\n";
                 this->output_file << "<br>\n";
                 this->in_display_math = false;

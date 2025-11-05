@@ -9,4 +9,5 @@ class Tokenizer {
     private:
 		void parseAsterisks(std::string &str);
         void parseInlineSymbol(std::string &str, const char symbol, const std::string tag_name);
+        void parseInlineSymbol(std::string &str, const char symbol, const std::string opening_tag, const std::string closing_tag);
 };
