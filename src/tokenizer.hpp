@@ -8,4 +8,5 @@ class Tokenizer {
         std::vector<Token> tokenizeLine(std::string &line);
     private:
 		void parseAsterisks(std::string &str);
+        void parseInlineSymbol(std::string &str, const char symbol, const std::string tag_name);
 };

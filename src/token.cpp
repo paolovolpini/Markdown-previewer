@@ -13,6 +13,7 @@ Token::Token(std::string input_string) {
     the newline symbol is always deleted, giving a string of size 0.
     this case is the only instance of a string of this size, so we can use this criteria to say if something
     is a newline or not*/
+    
     if (input_string.size() == 0) {
         this->type = BREAK_PARAGRAPH;
         return;
@@ -20,6 +21,11 @@ Token::Token(std::string input_string) {
 
     if (input_string.substr(0,3) == "```") {
         this->type = DISPLAY_CODE;
+        return;
+    }
+
+    if (input_string.substr(0,2) == "$$") {
+        this->type = DISPLAY_MATH;
         return;
     }
 

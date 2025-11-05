@@ -25,7 +25,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 
         case TEXT: {
             std::string to_write = token_to_write[i].getTokenString();
-            if (this->in_display_code) {
+            if (this->in_display_code || this->in_display_math) {
                 this->output_file << to_write;
                 break;
             }
@@ -46,7 +46,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 
         case BREAK_PARAGRAPH:
             if (this->in_paragraph == true) {
-                this->output_file << "</p>";
+                this->output_file << "</p>\n";
                 this->in_paragraph = false;
             } 
             break;
@@ -54,14 +54,28 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_CODE:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_code == false) {
+                this->output_file << "<div align=\"center\" style=\"background: 1px solid #b9b9b9ff;\">\n";
                 this->output_file << "<pre>\n\t<code>";
                 this->in_display_code = true;
             } else {
-                this->output_file << "\t</code>\n</pre>";
+                this->output_file << "\t</code>\n</pre>\n</div>";
                 this->in_display_code = false;
             }
             break;
 
+        case DISPLAY_MATH:
+            std::cout << token_to_write[i].getTokenString();
+            if (this->in_display_math == false) {
+                this->output_file << "<div align=\"center\" style=\"background: 1px solid #b9b9b9ff;\">\n";
+                this->output_file << "\t<math>";
+                this->in_display_math = true;
+            } else {
+                this->output_file << "\t</math>\n";
+                this->output_file << "</div>\n";
+                this->output_file << "<br>\n";
+                this->in_display_math = false;
+            }
+            break;
         default:
             break;
         }
@@ -84,7 +98,9 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 	}
 
     this->output_file << " ";
-    
+    if (this->in_display_code) {
+        this->output_file << "\n";
+    }
 }
 
 void HtmlRenderer::endHtmlWriting() {
