@@ -9,7 +9,7 @@ HtmlRenderer::HtmlRenderer(std::string file_name) {
 /* opening tags */
 void HtmlRenderer::createFile() {
     this->output_file.open(this->file_name, std::ios::out | std::ios::trunc);
-    this->output_file << "<!DOCTYPE html>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
+    this->output_file << "<!DOCTYPE html charset=UTF-8>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
     this->output_file << "<html lang=\"it\">\n<head>\n\t<meta charset=\"utf-8\">\t<title> your preview </title>\n</head>\n";
 }
 
