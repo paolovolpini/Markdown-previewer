@@ -2,15 +2,24 @@
 #include "token.hpp"
 #include <istream>
 
+
 HtmlRenderer::HtmlRenderer(std::string file_name) {
     this->file_name = file_name.substr(0, file_name.size()-3).append(".html");
 }
 
+std::string HtmlRenderer::insertCss(const std::string &css_path) {
+    if(css_path.empty()) return "";
+    std::fstream css_file(css_path);
+    std::stringstream buffer;
+    buffer << css_file.rdbuf();
+    return "<style>\n" + buffer.str() + "\n</style>\n";    
+}
+
 /* opening tags */
-void HtmlRenderer::createFile() {
+void HtmlRenderer::createFile(const std::string &css_path) {
     this->output_file.open(this->file_name, std::ios::out | std::ios::trunc);
-    this->output_file << "<!DOCTYPE html charset=UTF-8>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
-    this->output_file << "<html lang=\"it\">\n<head>\n\t<meta charset=\"utf-8\">\t<title> your preview </title>\n</head>\n";
+    this->output_file << "<!DOCTYPE html>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
+    this->output_file << "<html lang=\"it\">\n<head>\n" << insertCss(css_path) << "\t<meta charset=\"utf-8\">\t<title> your preview </title>\n</head>\n";
 }
 
 

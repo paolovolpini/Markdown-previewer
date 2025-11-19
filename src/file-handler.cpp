@@ -2,44 +2,80 @@
 #include <fstream>
 #include <filesystem>
 #include <future>
+#include <exception>
 #include "tokenizer.hpp"
 #include "renderer.hpp"
 #include "host-server.hpp"
+
+typedef struct {
+    std::string file_name;
+    std::string css_path;
+} CommandArgs;
+
+
+void printHelp(const std::string &prog_name) {
+    std::cout << "Usage: " << prog_name << " <markdown_file> [options]\n"
+    "Options available are:\n\t-c: custom CSS file path" << std::endl;
+}
+void parseArguments(int argc, char *argv[], CommandArgs &args) {
+    if(argc < 2) {
+        printHelp(std::string(argv[0]));
+        throw std::exception();
+    }
+    for(int i = 1; i < argc; i++) {
+        std::string temp(argv[i]);
+        if(temp.at(0) == '-') {
+            // process the flags 
+            switch(temp.at(1)) {
+                case 'c':
+                    args.css_path = std::string(argv[i+1]);
+                    break;
+                case 'h':
+                    printHelp(std::string(argv[0]));
+                    break;
+                default:
+                    std::cerr << "Unknown option '-" << temp.at(1) << "'. Try '-h' for help" << std::endl;
+                    throw std::exception();
+            }
+            i++;
+        }
+        else {
+            // file was given. Just take the first file and go on 
+            if(temp.substr(temp.length()-3, 3) != ".md") {
+                std::cerr << "File " << temp << " is not a markdown file" << std::endl;
+                throw std::exception();
+            }
+            
+            if(args.file_name.empty()) {
+                args.file_name = temp;
+            }
+        }
+    }
+}
+
 int main(int argc, char *argv[]) {
 
     std::fstream input_file;
-    
-    /* i think we could print the actual syntax here. or maybe we could have support for a -help flag*/
-    if (argc < 2) {
-        std::cerr << "not enough arguments." << std::endl;
-        return(EXIT_FAILURE);
+    CommandArgs args = {};
+    try {
+        parseArguments(argc, argv, args);
+    }
+    catch (const std::exception&) {
+        return 15;
     }
 
-    /* checking for file extension */
-    std::string file_path(argv[1]);
-    if (file_path.length() < 3) {
-        std::cerr << "input file is not a .md file." << std::endl;
-        return(EXIT_FAILURE);
-    }
-
-    if (!(file_path.substr(file_path.length()-3, 3) == ".md")) {
-        std::cerr << "input file is not a .md file." << std::endl;
-        return(EXIT_FAILURE);
-    }
-    
-    input_file.open(argv[1]);
-    if (!input_file.is_open()) {
-        std::cerr << "error: file was not properly opened, probably does not exists." << std::endl;
-        return(EXIT_FAILURE);
-    } 
-
+    input_file.open(args.file_name);
+    if(input_file.bad()) {
+        std::cerr << "Could not open file " << args.file_name << "." << std::endl;
+        return 16;
+    }    
     /* creating both the tokenizer object and html-renderer object */
     Tokenizer tokenizer;
     std::string lineBuffer;
-    HtmlRenderer renderer(file_path);
+    HtmlRenderer renderer(args.file_name);
     std::vector<Token> tokenLineBuffer;
     
-    renderer.createFile();
+    renderer.createFile(args.css_path);
 
     /* reads line per line*/
     while (getline(input_file, lineBuffer)) {
@@ -55,7 +91,7 @@ int main(int argc, char *argv[]) {
 	
 	// since we save automatically into an html
 	// i am testing by reading the html as a string 
-	std::string html_source = file_path.substr(0, file_path.size()-3).append(".html");
+	std::string html_source = args.file_name.substr(0, args.file_name.size()-3).append(".html");
 	auto size = std::filesystem::file_size(html_source);
 	std::string content(size, '\0');
 	std::ifstream in(html_source);
