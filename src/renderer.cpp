@@ -65,7 +65,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_CODE:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_code == false) {
-                this->output_file << "<div style=\"border: 1px solid #b8b8b8ff;\">\n";
+                this->output_file << "<div>\n";
                 this->output_file << "<pre>\n\t<code>";
                 this->in_display_code = true;
             } else {
@@ -77,7 +77,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
         case DISPLAY_MATH:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_display_math == false) {
-                this->output_file << "<div align=\"center\" style=\"border: 1px solid #b8b8b8ff;\">\n";
+                this->output_file << "<div align=\"center\"\">\n";
                 this->output_file << "\t \\(";
                 this->in_display_math = true;
             } else {
