@@ -1,0 +1,81 @@
+html *:not(mjx-container):not(mjx-container *) {
+    font-size: 13px;
+    font-family: "Fira Code", "JetBrains Mono", "Source Code Pro",
+                 "Lucida Console", "Courier New", monospace;
+    line-height: 1.5;
+}
+
+body {
+    background-color: #05080c;
+    color: #c5d0e6;
+    margin: 20px;
+}
+
+h1, h2, h3 {
+    font-weight: 500;
+    text-transform: none;
+    margin: 0.5em 0 0.3em 0;
+}
+
+h1::before {
+    content: "[arch@host]$ ";
+    color: #1793d1;
+}
+h2::before {
+    content: "└─ ";
+    color: #1793d1;
+}
+h3::before {
+    content: "   → ";
+    color: #1793d1;
+}
+
+p {
+    margin: 0.3em 0;
+    max-width: 90ch;
+}
+
+code {
+    font-family: inherit;
+    font-size: 0.95em;
+    color: #e6efff;
+    background-color: #101622;
+    padding: 1px 3px;
+    border-radius: 2px;
+    border: 1px solid #283548;
+}
+
+pre {
+    display: block;
+    padding: 10px 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+
+    background: radial-gradient(circle at top left, #101622 0, #05080c 60%);
+    border-radius: 4px;
+    border: 1px solid #283548;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    position: relative;
+}
+
+pre::before {
+    content: "● ● ●  I use arch, BTW";
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #4f5b71;
+}
+
+pre {
+    padding-top: 20px;
+}
+
+pre code {
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-size: inherit;
+    color: #c5d0e6;
+}

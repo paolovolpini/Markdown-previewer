@@ -1,0 +1,41 @@
+html *:not(mjx-container):not(mjx-container *) {
+    font-size: 14px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #1a1024;
+    color: #f5e9ff;
+    margin: 20px;
+}
+
+h1, h2, h3 {
+    color: #d4b3ff;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    color: #ffeaa7;
+    background-color: #2d1b3d;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #5e3370;
+}
+
+pre {
+    display: block;
+    padding: 12px;
+    overflow-x: auto;
+    background-color: #2d1b3d;
+    border-radius: 14px;
+    border: 1px solid #5e3370;
+}
+
+pre code {
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-size: inherit;
+    color: inherit;
+}

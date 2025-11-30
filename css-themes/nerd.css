@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+html *:not(mjx-container):not(mjx-container *) {
+    font-size: 12px;
+    font-family: "Press Start 2P", "Lucida Console", "Courier New", monospace;
+    letter-spacing: 0.05em;
+}
+
+body {
+    background-color: #000000;
+    color: #e0e0e0;
+    margin: 20px;
+    image-rendering: pixelated;
+}
+
+h1, h2, h3 {
+    text-transform: uppercase;
+    color: #00ff88;
+    text-shadow: 2px 2px #005533;
+}
+
+code {
+    font-family: "Press Start 2P", "Lucida Console", "Courier New", monospace;
+    font-size: 11px;
+    color: #00ff88;
+    background-color: #101010;
+    padding: 2px 4px;
+    border-radius: 0;
+}
+
+pre {
+    display: block;
+    padding: 10px;
+    overflow-x: auto;
+    background-color: #101010;
+    border-radius: 0;
+    border: 1px solid #00ff88;
+}
+
