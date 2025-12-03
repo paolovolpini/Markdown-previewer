@@ -20,3 +20,17 @@ int linear_search(int arr[], int value, int arr_size) {
     return -1;
 }
 ```
+
+- Ok adesso
+- questa è una lista
+
+speriamo bene
+
+And for my last trick
+
+1. questa
+2. è una lista
+3. ordinata
+
+speriamo...
+

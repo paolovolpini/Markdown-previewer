@@ -11,7 +11,9 @@ enum TokenType {
     DISPLAY_MATH,
     INLINE_CODE,
     DISPLAY_CODE,
-    BREAK_PARAGRAPH
+    BREAK_PARAGRAPH,
+    LIST,
+    ORDERED_LIST
 };
 
 class Token { 

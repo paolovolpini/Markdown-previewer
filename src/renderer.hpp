@@ -22,5 +22,7 @@ class HtmlRenderer {
         std::stack<Token> stack;
         bool in_paragraph = false;
         bool in_display_code = false;
-        bool in_display_math = false;	
+        bool in_display_math = false;
+        bool in_list = false;
+        bool is_list_ordered = false;
 };

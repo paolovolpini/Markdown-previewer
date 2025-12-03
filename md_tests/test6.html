@@ -4,41 +4,59 @@
 <html lang="it">
 <head>
 <style>
-html * {
+html *:not(mjx-container):not(mjx-container *) {
     font-size: 14px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #1e1e1e;
-    color: white;
+    background-color: #1a1024;
+    color: #f5e9ff;
     margin: 20px;
 }
 
-code, pre {
+h1, h2, h3 {
+    color: #d4b3ff;
+}
+
+code {
     font-family: 'Courier New', Courier, monospace;
     font-size: 13px;
-    color: #e3f4b2;
-    padding: 4px;
+    color: #ffeaa7;
+    background-color: #2d1b3d;
+    padding: 2px 4px;
     border-radius: 4px;
+    border: 1px solid #5e3370;
 }
 
 pre {
     display: block;
-    padding: 10px;
+    padding: 12px;
     overflow-x: auto;
+    background-color: #2d1b3d;
+    border-radius: 14px;
+    border: 1px solid #5e3370;
 }
+
+pre code {
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-size: inherit;
+    color: inherit;
+}
+
 </style>
 	<meta charset="utf-8">	<title> your preview </title>
 </head>
 <h1> Algoritmo di ricerca lineare</h1>  <p>L'algoritmo di <b>ricerca lineare</b> permette la ricerca di un determinato elemento \(x\) in un vettore <b>non ordinato</b> di dimensione \(N\). Chiameremo la procedura <code>linear_search</code>. </p>
  <p>La complessità di questo algoritmo è </p>
- <div align="center" style="border: 1px solid #b8b8b8ff;">
+ <div align="center"">
 	 \( O(n) = \text{Un passo per ogni slot del vettore} 	 \)
 </div>
 <br>
   <p>Una possibile implementazione è </p>
- <div style="border: 1px solid #b8b8b8ff;">
+ <div>
 <pre>
 	<code> 
 int linear_search(int arr[], int value, int arr_size) { 
@@ -50,4 +68,18 @@ int linear_search(int arr[], int value, int arr_size) {
     return -1; 
 } 
 	</code>
-</pre></html>
+</pre>
+</div>
+  <ul>
+	<li> 	<li>  Ok adesso </li>
+	<li> 	<li>  questa è una lista </li>
+</ul>
+ <p>speriamo bene </p>
+ <p>And for my last trick </p>
+ <ol>
+	<li>  questa </li>
+	<li>  è una lista </li>
+	<li>  ordinata </li>
+</ol>
+ <p>speriamo... </p>
+ </html>

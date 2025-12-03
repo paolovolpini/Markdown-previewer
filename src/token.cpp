@@ -37,13 +37,18 @@ Token::Token(std::string input_string) {
         return;
     }
 
-    /*
-    if ((input_string.substr(0,1) == "*" && input_string.substr(input_string.length()-1, 1) == "*") ||
-        (input_string.substr(0,2) == "**" && input_string.substr(input_string.length()-2, 2) == "**") ||
-        (input_string.substr(0,3) == "***" && input_string.substr(input_string.length()-3, 3) == "***")) {
-        std::cout << "found some!\n";
-        this->type = ;
-    }*/
+    if (input_string == "-") {
+        this->type = LIST;
+        return;
+    }
+
+    if (input_string.size() == 2 &&
+        input_string[1] == '.' &&
+        input_string[0] >= '0' && input_string[0] <= '9') {
+        this->type = ORDERED_LIST;
+        return;
+    }
+
     this->type = TEXT;
     this->tokenString = input_string;
     

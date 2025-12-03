@@ -25,7 +25,20 @@ void HtmlRenderer::createFile(const std::string &css_path) {
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     int title = 0;
+
+    if (!((token_to_write[0].getTokenType() == LIST) ||
+        (token_to_write[0].getTokenType() == ORDERED_LIST)) && (this->in_list == true)) {
+            if (this->is_list_ordered) {
+                this->output_file << "</ol>\n";
+                this->is_list_ordered = false;
+            } else {
+                this->output_file << "</ul>\n";
+            }  
+            this->in_list = false; 
+    }
+
 	for (int i = 0; i < (int)token_to_write.size(); i++) {
+
         
         switch (token_to_write[i].getTokenType()) {
         case TITLE:
@@ -41,7 +54,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 break;
             }
 
-            if (this->in_paragraph == false && title == false) {
+            if (this->in_paragraph == false && title == false && this->in_list == false) {
                 this->output_file << "<p>";
                 this->in_paragraph = true;
                 //this->stack.push(token_to_write[i]);
@@ -69,7 +82,7 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->output_file << "<pre>\n\t<code>";
                 this->in_display_code = true;
             } else {
-                this->output_file << "\t</code>\n</pre>\n</div>";
+                this->output_file << "\t</code>\n</pre>\n</div>\n";
                 this->in_display_code = false;
             }
             break;
@@ -87,9 +100,29 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->in_display_math = false;
             }
             break;
+
+        case LIST:
+            std::cout << token_to_write[i].getTokenString();
+            if (this->in_list == false) {
+                this->output_file << "<ul>\n";
+                this->in_list = true;
+            } 
+            this->output_file << "\t<li> ";
+        
+        case ORDERED_LIST:
+            std::cout << token_to_write[i].getTokenString();
+            if (this->in_list == false) {
+                this->output_file << "<ol>\n";
+                this->in_list = true;
+                this->is_list_ordered = true;
+            } 
+            this->output_file << "\t<li> ";
+        
         default:
             break;
         }
+
+
     }
 	/*
      handle tag closing using a stack
@@ -109,6 +142,11 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
 	}
 
     this->output_file << " ";
+    
+    if(this->in_list) {
+		this->output_file << "</li>\n";
+	}
+
     if (this->in_display_code) {
         this->output_file << "\n";
     }

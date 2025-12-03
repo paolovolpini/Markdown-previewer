@@ -7,31 +7,6 @@ Tokenizer::Tokenizer() {
 
 }
 
-
-// if we tokenize by spaces, how are newlines tokenized?
-// stringstream by default ignores newlines
-
-/*
-std::vector<Token> Tokenizer::tokenizeLine(const std::string &line) {
-
-    std::vector<Token> tokens;
-    
-    std::stringstream ss(line);
-    
-    std::string buffer;
-    // this ignores EVERY newline
-	
-    while (ss >> buffer) {
-        here we should also handle the 
-        separation of *, **, ***, `, ```
-        tokens.push_back(Token(buffer));
-        //std::cout << buffer << "\n";
-    }
-    
-	
-    return tokens;
-}*/
-
 void Tokenizer::parseAsterisks(std::string &str) {
 	std::stack<std::pair<std::size_t, int>> ast_stack;
 	std::size_t index = str.find('*', 0);
