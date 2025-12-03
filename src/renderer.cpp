@@ -19,22 +19,22 @@ std::string HtmlRenderer::insertCss(const std::string &css_path) {
 void HtmlRenderer::createFile(const std::string &css_path) {
     this->output_file.open(this->file_name, std::ios::out | std::ios::trunc);
     this->output_file << "<!DOCTYPE html>\n<html>\n<script src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n";
+    this->output_file << "<! -- MADE WITH Markdown-previewer, made by Paolo Volpini and Damiano Trovato, https://github.com/paolovolpini/Markdown-previewer -->\n";
     this->output_file << "<html lang=\"it\">\n<head>\n" << insertCss(css_path) << "\t<meta charset=\"utf-8\">\t<title> your preview </title>\n</head>\n";
 }
 
 
 void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     int title = 0;
+    if (token_to_write[0].getTokenType() == BREAK_PARAGRAPH){
 
-    if (!((token_to_write[0].getTokenType() == LIST) ||
-        (token_to_write[0].getTokenType() == ORDERED_LIST)) && (this->in_list == true)) {
-            if (this->is_list_ordered) {
-                this->output_file << "</ol>\n";
-                this->is_list_ordered = false;
-            } else {
-                this->output_file << "</ul>\n";
-            }  
+    } else if ((token_to_write[0].getTokenType() != LIST) && (this->in_list == true) && (this->is_list_ordered == false)) {
+            this->output_file << "</ul>\n";
             this->in_list = false; 
+    } else if ((token_to_write[0].getTokenType() != ORDERED_LIST) && (this->in_list == true) && (this->is_list_ordered == true)) {
+            this->output_file << "</ol>\n";
+            this->in_list = false; 
+            this->is_list_ordered = false; 
     }
 
 	for (int i = 0; i < (int)token_to_write.size(); i++) {
@@ -108,7 +108,8 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->in_list = true;
             } 
             this->output_file << "\t<li> ";
-        
+            break;
+
         case ORDERED_LIST:
             std::cout << token_to_write[i].getTokenString();
             if (this->in_list == false) {
@@ -117,7 +118,8 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
                 this->is_list_ordered = true;
             } 
             this->output_file << "\t<li> ";
-        
+            break;
+
         default:
             break;
         }
@@ -138,12 +140,12 @@ void HtmlRenderer::writeTokenToFile(std::vector<Token> token_to_write) {
     }
 	*/
 	if(title) {
-		this->output_file << "</h" << title << ">";
+		this->output_file << "</h" << title << ">\n";
 	}
 
     this->output_file << " ";
     
-    if(this->in_list) {
+    if(this->in_list && token_to_write[0].getTokenType() != BREAK_PARAGRAPH) {
 		this->output_file << "</li>\n";
 	}
 
